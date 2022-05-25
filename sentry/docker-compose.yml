@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  redis:
+    image: redis
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: sentry
+      POSTGRES_PASSWORD: sentry
+      POSTGRES_DB: sentry
+
+  web:
+    container_name: web
+    image: sentry
+    links:
+     - redis
+     - postgres
+    environment:
+      SENTRY_SECRET_KEY: 'dungnv45'
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: sentry
+      SENTRY_REDIS_HOST: redis
+
+
+

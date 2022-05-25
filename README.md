@@ -29,3 +29,38 @@ spring.profiles.active=@activatedProperties@
 + run with maven
 - mvn spring-boot:run -P dev 
 - mvn package -P dev
+
+
+2. Apply .gitignore
+git rm -r --cached .
+git add .
+git commit -m ".gitignore is now working"
+
+
+3. nginx.conf
+
+events {}
+
+http {
+	server {
+	    listen 80;
+		
+		location / {
+			proxy_pass http://localhost:3000;
+			proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+		}
+	  
+	    location /api {
+			proxy_pass http://localhost:8080/api;
+			proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+		}
+	  
+	}
+}
+
